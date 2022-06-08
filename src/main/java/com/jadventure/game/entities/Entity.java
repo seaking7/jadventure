@@ -196,41 +196,45 @@ public abstract class Entity {
         }
         equipment.put(place, item);
         removeItemFromStorage(item);
+        return applyItem(item, oldDamage);
+    }
+
+    private Map<String, String> applyItem(Item item, double oldDamage) {
         Map<String, String> result = new HashMap<String, String>();
         switch (item.getId().charAt(0)) {
-        case 'w': {
-            this.weapon = item.getId();
-            this.damage += item.getProperty("damage");
-            double diffDamage = this.damage - oldDamage;
-            result.put("damage", String.valueOf(diffDamage));
-            break;
-        }
-        case 'a': {
-            this.armour += item.getProperty("armour");
-            result.put("armour", String.valueOf(item.getProperty("armour")));
-            break;
-        }
-        case 'p': {
-            if (item.containsProperty("healthMax")) {
-                this.healthMax += item.getProperty("healthMax");
-                this.health = (this.health > this.healthMax) ? this.healthMax : this.health;
+            case 'w': {
+                this.weapon = item.getId();
+                this.damage += item.getProperty("damage");
+                double diffDamage = this.damage - oldDamage;
+                result.put("damage", String.valueOf(diffDamage));
+                break;
+            }
+            case 'a': {
+                this.armour += item.getProperty("armour");
+                result.put("armour", String.valueOf(item.getProperty("armour")));
+                break;
+            }
+            case 'p': {
+                if (item.containsProperty("healthMax")) {
+                    this.healthMax += item.getProperty("healthMax");
+                    this.health = (this.health > this.healthMax) ? this.healthMax : this.health;
+                    unequipItem(item); // One use only
+                    removeItemFromStorage(item);
+                    result.put("health",
+                            String.valueOf(item.getProperty("healthMax")));
+                }
+                break;
+            }
+            case 'f': {
+                int healthOld = this.getHealth();
+                this.health += item.getProperty("health");
+                this.health = (this.health > this.healthMax) ? this.healthMax
+                        : this.health;
                 unequipItem(item); // One use only
                 removeItemFromStorage(item);
-                result.put("health",
-                        String.valueOf(item.getProperty("healthMax")));
+                result.put("health", String.valueOf(health - healthOld));
+                break;
             }
-            break;
-        }
-        case 'f': {
-            int healthOld = this.getHealth();
-            this.health += item.getProperty("health");
-            this.health = (this.health > this.healthMax) ? this.healthMax
-                    : this.health;
-            unequipItem(item); // One use only
-            removeItemFromStorage(item);
-            result.put("health", String.valueOf(health - healthOld));
-            break;
-        }
         }
         return result;
     }

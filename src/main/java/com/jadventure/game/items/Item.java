@@ -20,7 +20,7 @@ public class Item {
     private final Map<String, Integer> properties;
 
     public Item(String id, String type, String name, String description, int level, Map<String, Integer> properties) {
-        this(id, type, name, description, null, level, properties);
+        this(id, type, name, description, EquipmentLocation.RIGHT_HAND, level, properties);
     }
     public Item(String id, String type, String name, String description, EquipmentLocation position, int level, Map<String, Integer> properties) {
         this.id = id;

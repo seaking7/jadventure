@@ -5,12 +5,15 @@ import com.jadventure.game.items.Storage;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.MAP;
 
 
 public class EntityTest {
@@ -83,6 +86,50 @@ public class EntityTest {
         entity.addItemToStorage(item);
         assertThat(entity.getStorage().getItems().get(0).getItem()).isEqualTo(item);
     }
+
+    @Test
+    void testSetHealth(){
+        String id = "pmil1";
+        String type = "food-liquid";
+        String name = "milk";
+        String description = "";
+        Item item = new Item(id, type, name, description, 1, null);
+        entity.setStorage(new Storage(300));
+        entity.addItemToStorage(item);
+
+        //given
+        entity.setHealth(200);
+        //when
+        entity.setHealthMax(2100);
+        //then
+        assertThat(entity.getHealth()).isEqualTo(200);
+        assertThat(entity.getHealthMax()).isEqualTo(2100);
+    }
+
+    @DisplayName("최대체력 2100, 현재체력 200에서 900밀크 먹으면 최대체력 3000")
+    @Test
+    void testEquipItem(){
+        String id = "pmil1";
+        String type = "food-liquid";
+        String name = "milk";
+        String description = "";
+        Map<String, Integer> properties = new HashMap<>();
+        properties.put("healthMax", Integer.valueOf(900));
+
+        Item item = new Item(id, type, name, description, 1, properties);
+        entity.setStorage(new Storage(300));
+        entity.addItemToStorage(item);
+        entity.setHealth(200);
+        entity.setHealthMax(2100);
+
+        //when
+        entity.equipItem(EquipmentLocation.RIGHT_HAND, item);
+
+        //then
+        assertThat(entity.getHealthMax()).isEqualTo(3000);
+
+    }
+
 
     private void testInt(Object test) {
         assertThat(test).isInstanceOf(Integer.class);
