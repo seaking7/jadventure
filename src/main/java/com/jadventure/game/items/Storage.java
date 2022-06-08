@@ -62,9 +62,9 @@ public class Storage {
         double totalWeight = itemStack.getItem().getWeight() * itemStack.getAmount();
         if (totalWeight < this.maxWeight) {
             if (contains(itemStack)) {
-                ItemStack sameType = this.getSameType(itemStack);
-                this.items.remove(sameType);
-                this.items.add(new ItemStack(sameType.getAmount()+1, sameType.getItem()));
+                ItemStack havedItem = this.getSameType(itemStack);
+                this.items.remove(havedItem);
+                this.items.add(new ItemStack(havedItem.getAmount() + itemStack.getAmount(), havedItem.getItem()));
             } else {
                 this.items.add(itemStack);
             }

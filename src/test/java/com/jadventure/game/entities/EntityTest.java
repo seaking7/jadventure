@@ -2,9 +2,15 @@ package com.jadventure.game.entities;
 
 import com.jadventure.game.items.Item;
 import com.jadventure.game.items.Storage;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.MAP;
 
 
 public class EntityTest {
@@ -22,44 +28,48 @@ public class EntityTest {
 
     @Test
     public void testCreation() {
-        //Assert.assertTrue(entity instanceof Entity);
+        assertThat(entity).isInstanceOf(Entity.class);
     }
 
     @Test
     public void testType() {
-//        testInt(entity.getHealthMax());
-//        testInt(entity.getHealth());
-//        Object test = entity.getName();
-//        Assert.assertTrue(test instanceof String);
-//        testInt(entity.getLevel());
-//        testInt(entity.getStrength());
-//        testInt(entity.getIntelligence());
-//        testInt(entity.getDexterity());
-//        testInt(entity.getLuck());
-//        testInt(entity.getStealth());
-//        testInt(entity.getGold());
-//        test = entity.getDamage();
-//        Assert.assertTrue(test instanceof Double);
-//        test = entity.getWeapon();
-//        Assert.assertTrue(test instanceof String);
-//        test = entity.getEquipment();
-//        Assert.assertTrue(test instanceof Map);
+        testInt(entity.getHealthMax());
+        testInt(entity.getHealth());
+        Object test = entity.getName();
+        assertThat(test).isInstanceOf(String.class);
+        testInt(entity.getLevel());
+        testInt(entity.getStrength());
+        testInt(entity.getIntelligence());
+        testInt(entity.getDexterity());
+        testInt(entity.getLuck());
+        testInt(entity.getStealth());
+        testInt(entity.getGold());
+        test = entity.getDamage();
+        assertThat(test).isInstanceOf(Double.class);
+        test = entity.getWeapon();
+        assertThat(test).isInstanceOf(String.class);
+        test = entity.getEquipment();
+
     }
 
     @Test
     public void testSetters() {
-//        entity.setHealth(50);
-//        Assert.assertEquals(entity.getHealth(), 50);
-//        Assert.assertTrue(entity.getHealthMax() >= entity.getHealth());
-//        entity.setGold(10);
-//        Assert.assertEquals(entity.getGold(), 10);
-//        entity.setArmour(20);
-//        Assert.assertEquals(entity.getArmour(), 20);
-//        entity.setHealthMax(30);
-//        Assert.assertEquals(entity.getHealthMax(), 30);
-//        Assert.assertTrue(entity.getHealth() <= entity.getHealthMax());
-//        entity.setLevel(3);
-//        Assert.assertEquals(entity.getLevel(), 3);
+        entity.setHealth(50);
+        assertThat(entity.getHealth()).isEqualTo(50);
+        assertThat(entity.getHealthMax()).isGreaterThan(entity.getHealth());
+
+        entity.setGold(10);
+        assertThat(entity.getGold()).isEqualTo(10);
+
+        entity.setArmour(20);
+        assertThat(entity.getArmour()).isEqualTo(20);
+
+        entity.setHealthMax(30);
+        assertThat(entity.getHealthMax()).isEqualTo(30);
+        assertThat(entity.getHealth()).isLessThanOrEqualTo(entity.getHealthMax());
+
+        entity.setLevel(3);
+        assertThat((entity.getLevel())).isEqualTo(3);
     }
 
     @Test
@@ -71,10 +81,10 @@ public class EntityTest {
         Item item = new Item(id, type, name, description, 1, null);
         entity.setStorage(new Storage(300));
         entity.addItemToStorage(item);
-        //Assert.assertEquals(entity.getStorage().getItems().get(0).getItem(), item);
+        assertThat(entity.getStorage().getItems().get(0).getItem()).isEqualTo(item);
     }
 
     private void testInt(Object test) {
-      //  Assert.assertTrue(test instanceof Integer);
+        assertThat(test).isInstanceOf(Integer.class);
     }
 }
